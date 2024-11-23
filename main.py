@@ -47,7 +47,7 @@ def extract_features(context, redacted_length):
 
 # Train the logistic regression model
 def train_model(train_data, vectorizer):
-    match = re.search(r"█+", train_data["context"])
+    match = re.search(r"█+", train_data["context"].iloc[0])
     if match:
         X_train = vectorizer.fit_transform(train_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()))))
     else:
@@ -59,7 +59,7 @@ def train_model(train_data, vectorizer):
 
 # Evaluate the model
 def evaluate_model(model, vectorizer, val_data):
-    match = re.search(r"█+", val_data["context"])
+    match = re.search(r"█+", val_data["context"].iloc[0])
     if match:
         X_val = vectorizer.transform(val_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()))))
     else:
