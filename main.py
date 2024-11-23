@@ -61,11 +61,11 @@ def evaluate_model(model, vectorizer, val_data):
 # Main function to run the pipeline
 def main():
     # Paths
-    tar_path = "/blue/cis6930/share/aclImdb_v1.tar.gz"
+    # tar_path = "/blue/cis6930/share/aclImdb_v1.tar.gz"
     unredactor_path = "unredactor.tsv"
     
     # Step 1: Extract IMDB data (if needed)
-    extract_imdb_data(tar_path)
+    # extract_imdb_data(tar_path)
     
     # Step 2: Load unredactor data
     unredactor_df = load_unredactor_data(unredactor_path)
