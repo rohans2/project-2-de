@@ -52,7 +52,7 @@ def train_model(train_data, vectorizer):
     if match not in [None, ""]:
         print("match found")
         
-        X_train = vectorizer.fit_transform(train_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()))))
+        X_train = vectorizer.fit_transform(train_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()) if re.search(r"█+", x) else 0)))
     else:
         X_train = vectorizer.fit_transform(train_data["context"])
     y_train = train_data["name"]
@@ -64,7 +64,7 @@ def train_model(train_data, vectorizer):
 def evaluate_model(model, vectorizer, val_data):
     match = re.search(r"█+", val_data["context"].iloc[0])
     if match:
-        X_val = vectorizer.transform(val_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()))))
+        X_val = vectorizer.transform(val_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()) if re.search(r"█+", x) else 0)))
     else:
         X_val = vectorizer.transform(val_data["context"])
     # X_val = vectorizer.transform(val_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()))))
