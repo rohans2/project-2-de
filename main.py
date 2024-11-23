@@ -33,7 +33,7 @@ def extract_features(context, redacted_length):
     following_word = tokens[tokens.index("█") + 1] if "█" in tokens and tokens.index("█") < len(tokens) - 1 else ""
     
     # Extract n-grams around the redacted block
-    preceding_bigram = " ".join(tokens[max(0, tokens.index("█") - 2):tokens.index("█")])
+    preceding_bigram = " ".join(tokens[max(0, tokens.index("█") - 2):tokens.index("█")] if "█" in tokens else [])
     following_bigram = " ".join(tokens[tokens.index("█") + 1:tokens.index("█") + 3] if "█" in tokens else [])
     
     features = {
