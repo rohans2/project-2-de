@@ -47,7 +47,11 @@ def extract_features(context, redacted_length):
 
 # Train the logistic regression model
 def train_model(train_data, vectorizer):
-    X_train = vectorizer.fit_transform(train_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()))))
+    match = re.search(r"█+", train_data["context"])
+    if match:
+        X_train = vectorizer.fit_transform(train_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()))))
+    else:
+        X_train = vectorizer.fit_transform(train_data["context"])
     y_train = train_data["name"]
     model = LogisticRegression(max_iter=1000)
     model.fit(X_train, y_train)
@@ -55,7 +59,12 @@ def train_model(train_data, vectorizer):
 
 # Evaluate the model
 def evaluate_model(model, vectorizer, val_data):
-    X_val = vectorizer.transform(val_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()))))
+    match = re.search(r"█+", val_data["context"])
+    if match:
+        X_val = vectorizer.transform(val_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()))))
+    else:
+        X_val = vectorizer.transform(val_data["context"])
+    # X_val = vectorizer.transform(val_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()))))
     y_val = val_data["name"]
     y_pred = model.predict(X_val)
     report = classification_report(y_val, y_pred, output_dict=True)
