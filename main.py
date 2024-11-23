@@ -47,14 +47,8 @@ def extract_features(context, redacted_length):
 
 # Train the logistic regression model
 def train_model(train_data, vectorizer):
-    match = re.search(r"█+", train_data["context"].iloc[0])
-    print("match:", match)
-    if match not in [None, ""]:
-        print("match found")
-        
-        X_train = vectorizer.fit_transform(train_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()) if re.search(r"█+", x) else 0)))
-    else:
-        X_train = vectorizer.fit_transform(train_data["context"])
+    
+    X_train = vectorizer.fit_transform(train_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()) if re.search(r"█+", x) else 0)))
     y_train = train_data["name"]
     model = LogisticRegression(max_iter=1000)
     model.fit(X_train, y_train)
@@ -62,11 +56,9 @@ def train_model(train_data, vectorizer):
 
 # Evaluate the model
 def evaluate_model(model, vectorizer, val_data):
-    match = re.search(r"█+", val_data["context"].iloc[0])
-    if match:
-        X_val = vectorizer.transform(val_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()) if re.search(r"█+", x) else 0)))
-    else:
-        X_val = vectorizer.transform(val_data["context"])
+    
+    X_val = vectorizer.transform(val_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()) if re.search(r"█+", x) else 0)))
+    
     # X_val = vectorizer.transform(val_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()))))
     y_val = val_data["name"]
     y_pred = model.predict(X_val)
