@@ -21,7 +21,7 @@ def extract_imdb_data(tar_path, extract_to="aclImdb"):
 
 # Load the unredactor dataset
 def load_unredactor_data(filepath):
-    return pd.read_csv(filepath, sep="\t")
+    return pd.read_csv(filepath, sep="\t", on_bad_lines='skip')
 
 # Feature extraction
 def extract_features(context, redacted_length):
