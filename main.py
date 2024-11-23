@@ -44,16 +44,16 @@ def extract_features(context, redacted_length):
 
 # Train the logistic regression model
 def train_model(train_data, vectorizer):
-    X_train = vectorizer.fit_transform(train_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()))))
-    y_train = train_data["name"]
+    X_train = vectorizer.fit_transform(train_data[2].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()))))
+    y_train = train_data[1]
     model = LogisticRegression(max_iter=1000)
     model.fit(X_train, y_train)
     return model
 
 # Evaluate the model
 def evaluate_model(model, vectorizer, val_data):
-    X_val = vectorizer.transform(val_data["context"].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()))))
-    y_val = val_data["name"]
+    X_val = vectorizer.transform(val_data[2].apply(lambda x: extract_features(x, len(re.search(r"█+", x).group()))))
+    y_val = val_data[1]
     y_pred = model.predict(X_val)
     report = classification_report(y_val, y_pred, output_dict=True)
     return report
@@ -71,8 +71,8 @@ def main():
     unredactor_df = load_unredactor_data(unredactor_path)
     
     # Step 3: Split data into training and validation sets
-    train_data = unredactor_df[unredactor_df["split"] == "training"]
-    val_data = unredactor_df[unredactor_df["split"] == "validation"]
+    train_data = unredactor_df[unredactor_df[0] == "training"]
+    val_data = unredactor_df[unredactor_df[0] == "validation"]
     
     # Step 4: Initialize the vectorizer and train the model
     vectorizer = DictVectorizer()
