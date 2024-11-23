@@ -6,6 +6,7 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 import nltk
 from nltk import word_tokenize, sent_tokenize
+
 import re
 
 # Ensure required nltk data is downloaded
@@ -13,7 +14,7 @@ nltk.download("punkt")
 nltk.download("averaged_perceptron_tagger")
 nltk.download("maxent_ne_chunker")
 nltk.download("words")
-
+nltk.download('punkt_tab')
 # Extracting the IMDB dataset
 def extract_imdb_data(tar_path, extract_to="aclImdb"):
     with tarfile.open(tar_path, "r:gz") as tar:
