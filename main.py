@@ -1,6 +1,6 @@
 import pandas as pd
 import tarfile
-from sklearn.feature_extraction.text import DictVectorizer
+from sklearn.feature_extraction import DictVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
